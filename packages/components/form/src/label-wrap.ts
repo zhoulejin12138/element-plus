@@ -16,19 +16,25 @@ import {
 } from '@element-plus/utils/resize-event'
 import { formItemContextKey, formContextKey } from '@element-plus/tokens'
 import { useNamespace } from '@element-plus/hooks'
+import { throwError } from '@element-plus/utils/error'
 import type { ResizableElement } from '@element-plus/utils/resize-event'
 
 import type { CSSProperties } from 'vue'
 
+const COMPONENT_NAME = 'ElLabelWrap'
 export default defineComponent({
-  name: 'ElLabelWrap',
+  name: COMPONENT_NAME,
   props: {
     isAutoWidth: Boolean,
     updateAll: Boolean,
   },
   setup(props, { slots }) {
     const formContext = inject(formContextKey)
+    if (!formContext) throwError(COMPONENT_NAME, 'can not inject form context.')
     const formItemContext = inject(formItemContextKey)
+    if (!formItemContext)
+      throwError(COMPONENT_NAME, 'can not inject form-item context.')
+
     const ns = useNamespace('form')
 
     const el = ref<HTMLElement>()
@@ -36,8 +42,8 @@ export default defineComponent({
 
     watch(computedWidth, (val, oldVal) => {
       if (props.updateAll) {
-        formContext?.registerLabelWidth(val, oldVal)
-        formItemContext?.updateComputedLabelWidth(val)
+        formContext.registerLabelWidth(val, oldVal)
+        formItemContext.updateComputedLabelWidth(val)
       }
     })
 
@@ -56,7 +62,7 @@ export default defineComponent({
           if (action === 'update') {
             computedWidth.value = getLabelWidth()
           } else if (action === 'remove') {
-            formContext?.deregisterLabelWidth(computedWidth.value)
+            formContext.deregisterLabelWidth(computedWidth.value)
           }
         }
       })
@@ -84,7 +90,7 @@ export default defineComponent({
     return () => {
       if (!slots) return null
       if (props.isAutoWidth) {
-        const autoLabelWidth = formContext?.autoLabelWidth
+        const autoLabelWidth = formContext.autoLabelWidth
         const style = {} as CSSProperties
         if (autoLabelWidth && autoLabelWidth !== 'auto') {
           const marginWidth = Math.max(
