@@ -94,7 +94,9 @@ export function useFormLabelWidth() {
 
   function deregisterLabelWidth(val: number) {
     const index = getLabelWidthIndex(val)
-    index > -1 && potentialLabelWidthArr.value.splice(index, 1)
+    if (index > -1) {
+      potentialLabelWidthArr.value.splice(index, 1)
+    }
   }
 
   return {

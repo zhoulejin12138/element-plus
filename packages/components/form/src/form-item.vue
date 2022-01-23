@@ -161,7 +161,6 @@ export default defineComponent({
     }
     const isRequired = computed(() => {
       const rules = getRules()
-      if (rules.length === 0) return false
       return rules.some((rule) => rule.required === true)
     })
     const shouldShowError = computed(() => {
@@ -256,7 +255,7 @@ export default defineComponent({
 
     const evaluateValidationEnabled: FormItemContext['evaluateValidationEnabled'] =
       () => {
-        isValidationEnabled.value = !!getRules()?.length
+        isValidationEnabled.value = !!getRules().length
       }
 
     const updateComputedLabelWidth: FormItemContext['updateComputedLabelWidth'] =

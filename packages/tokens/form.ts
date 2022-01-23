@@ -20,13 +20,13 @@ export type FormContext = FormProps &
     validateField: (props: string | string[], cb: FormValidateCallback) => void
   }
 
-export type FormItemContext = FormItemProps & {
+export interface FormItemContext extends FormItemProps {
   $el: HTMLDivElement | undefined
   prop?: string
   size?: ComponentSize
   validateState: string
   validate(trigger: string, callback?: FormValidateCallback): void
-  updateComputedLabelWidth(width: string | number): void
+  updateComputedLabelWidth(width: number): void
   evaluateValidationEnabled(): void
   resetField(): void
   clearValidate(): void
