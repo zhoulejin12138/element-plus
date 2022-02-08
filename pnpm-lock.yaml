@@ -74,6 +74,7 @@ importers:
       ts-jest: 26.5.6
       ts-morph: 13.0.3
       typescript: 4.5.5
+      unplugin-vue-define-options: ^0.0.5
       vue: 3.2.27
       vue-jest: 5.0.0-alpha.10
       vue-router: 4.0.12
@@ -150,6 +151,7 @@ importers:
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.5.5
       ts-morph: 13.0.3
       typescript: 4.5.5
+      unplugin-vue-define-options: 0.0.5
       vue: 3.2.27
       vue-jest: 5.0.0-alpha.10_ea3c22d7b644c17bd573acac8c695366
       vue-router: 4.0.12_vue@3.2.27
@@ -10797,6 +10799,10 @@ packages:
       - supports-color
       - vite
       - webpack
+    dev: true
+
+  /unplugin-vue-define-options/0.0.5:
+    resolution: {integrity: sha512-if7ElfF2MDffSJk4HfjbRNzpuGYJLs/xvJHcvzZFMY3Kw9Hrd+LB9hX9de/qvOEPd7d/+02LwxsDXSDkx0gRDA==}
     dev: true
 
   /unplugin/0.2.21_rollup@2.67.1+vite@2.7.13:

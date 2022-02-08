@@ -14,7 +14,8 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "types": ["unplugin-vue-define-options"]
   },
   "include": ["packages"],
   "exclude": ["node_modules", "**/__test?__", "**/dist"]
