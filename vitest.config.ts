@@ -9,5 +9,6 @@ export default defineConfig({
     include: ['**/*.vitest.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['**/*.test.*', '**/*.spec.*'],
     environment: 'jsdom',
+    testTimeout: Infinity,
   },
 })

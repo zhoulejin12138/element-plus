@@ -1,8 +1,10 @@
-import { ref, h, nextTick, defineComponent } from 'vue'
+import { ref, nextTick, defineComponent, markRaw } from 'vue'
 import { mount } from '@vue/test-utils'
+import { describe, it, expect } from 'vitest'
 import { Loading, Search } from '@element-plus/icons-vue'
 import Button from '../src/button.vue'
 import ButtonGroup from '../src/button-group.vue'
+import type { ComponentSize } from '@element-plus/constants'
 
 const AXIOM = 'Rem is the best girl'
 
@@ -13,10 +15,9 @@ describe('Button.vue', () => {
     })
     expect(wrapper.classes()).toContain('el-button--primary')
   })
-
   it('icon', () => {
     const wrapper = mount(Button, {
-      props: { icon: Search },
+      props: { icon: markRaw(Search) },
     })
     expect(wrapper.findComponent(Search).exists()).toBeTruthy()
   })
@@ -58,7 +59,7 @@ describe('Button.vue', () => {
     expect(wrapper.classes()).toContain('is-circle')
   })
 
-  test('render text', () => {
+  it('render text', () => {
     const wrapper = mount(Button, {
       slots: {
         default: AXIOM,
@@ -67,7 +68,7 @@ describe('Button.vue', () => {
     expect(wrapper.text()).toEqual(AXIOM)
   })
 
-  test('handle click', async () => {
+  it('handle click', async () => {
     const wrapper = mount(Button, {
       slots: {
         default: AXIOM,
@@ -77,17 +78,17 @@ describe('Button.vue', () => {
     expect(wrapper.emitted()).toBeDefined()
   })
 
-  test('handle click inside', async () => {
+  it('handle click inside', async () => {
     const wrapper = mount(Button, {
       slots: {
         default: '<span class="inner-slot"></span>',
       },
     })
-    await (<HTMLElement>wrapper.element.querySelector('.inner-slot')).click()
+    wrapper.element.querySelector<HTMLElement>('.inner-slot')!.click()
     expect(wrapper.emitted()).toBeDefined()
   })
 
-  test('loading implies disabled', async () => {
+  it('loading implies disabled', async () => {
     const wrapper = mount(Button, {
       slots: {
         default: AXIOM,
@@ -119,57 +120,47 @@ describe('Button.vue', () => {
 
   it('loading slot', () => {
     const App = defineComponent({
-      setup() {
-        return () =>
-          h(
-            Button,
-            {
-              loading: true,
-            },
-            {
-              default: 'Loading',
-              loading: h(
-                'span',
-                {
-                  class: 'custom-loading',
-                },
-                ['111']
-              ),
-            }
-          )
-      },
+      setup: () => () =>
+        (
+          <Button
+            v-slots={{
+              default: () => 'Loading',
+              loading: () => <span class="custom-loading">111</span>,
+            }}
+            loading={true}
+          />
+        ),
     })
     const wrapper = mount(App)
     expect(wrapper.find('.custom-loading').exists()).toBeTruthy()
   })
 })
+
 describe('Button Group', () => {
   it('create', () => {
     const wrapper = mount({
-      template: `
-        <el-button-group>
-        <el-button type="primary">Prev</el-button>
-        <el-button type="primary">Next</el-button>
-        </el-button-group>`,
-      components: {
-        'el-button-group': ButtonGroup,
-        'el-button': Button,
-      },
+      setup: () => () =>
+        (
+          <ButtonGroup>
+            <Button type="primary">Prev</Button>
+            <Button type="primary">Next</Button>
+          </ButtonGroup>
+        ),
     })
     expect(wrapper.classes()).toContain('el-button-group')
     expect(wrapper.findAll('button').length).toBe(2)
   })
 
   it('button group reactive size', async () => {
-    const size = ref('small')
+    const size = ref<ComponentSize>('small')
     const wrapper = mount({
-      setup() {
-        return () =>
-          h(ButtonGroup, { size: size.value }, () => [
-            h(Button, { type: 'primary' }, () => 'Prev'),
-            h(Button, { type: 'primary' }, () => 'Next'),
-          ])
-      },
+      setup: () => () =>
+        (
+          <ButtonGroup size={size.value}>
+            <Button type="primary">Prev</Button>
+            <Button type="primary">Next</Button>
+          </ButtonGroup>
+        ),
     })
     expect(wrapper.classes()).toContain('el-button-group')
     expect(
@@ -186,13 +177,13 @@ describe('Button Group', () => {
 
   it('button group type', async () => {
     const wrapper = mount({
-      setup() {
-        return () =>
-          h(ButtonGroup, { type: 'warning' }, () => [
-            h(Button, { type: 'primary' }, () => 'Prev'),
-            h(Button, {}, () => 'Next'),
-          ])
-      },
+      setup: () => () =>
+        (
+          <ButtonGroup type="warning">
+            <Button type="primary">Prev</Button>
+            <Button>Next</Button>
+          </ButtonGroup>
+        ),
     })
     expect(wrapper.classes()).toContain('el-button-group')
     expect(
