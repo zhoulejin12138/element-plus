@@ -1,9 +1,9 @@
 <template>
   <el-form ref="formRef" :model="form" label-width="120px">
-    <el-form-item label="Activity name">
+    <el-form-item label="账号">
       <el-input v-model="form.name"></el-input>
     </el-form-item>
-    <el-form-item label="Activity zone">
+    <el-form-item label="密码">
       <el-select v-model="form.region" placeholder="please select your zone">
         <el-option label="Zone one" value="shanghai"></el-option>
         <el-option label="Zone two" value="beijing"></el-option>
